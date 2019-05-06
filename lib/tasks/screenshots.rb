@@ -789,6 +789,7 @@ puts "SEED=#{RANDOM_SEED}"
 FactoryBot.find_definitions
 Utilities.redefine_factories
 Capybara.default_driver = :selenium_chrome_headless
+Selenium::WebDriver::Chrome.path
 DatabaseCleaner.strategy = :deletion
 DatabaseCleaner.start
 
