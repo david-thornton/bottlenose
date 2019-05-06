@@ -76,7 +76,7 @@ module Utilities
       ctx.lineTo(inX, inY);
       ctx.lineTo(outX, outY);
     }
-    ctx.closePath();
+    ctx.closePath(); 
     ctx.save();
       ctx.scale(width / 2, height / 2);
       var gradient = ctx.createRadialGradient(0, 0, 0, 0, 0, 1, 1);
@@ -102,7 +102,7 @@ JAVASCRIPT
     page.execute_script("$('#hilite_" + id + "').remove()")
   end
 
-
+  
   def bbox(*elems)
     elems = elems.map do |e|
       if e.is_a? Capybara::Result
@@ -114,7 +114,7 @@ JAVASCRIPT
     page.evaluate_script(<<-JAVASCRIPT, *elems)
 (function() {
   var dimen = {
-    top: Number.MAX_VALUE, left: Number.MAX_VALUE,
+    top: Number.MAX_VALUE, left: Number.MAX_VALUE, 
     right: -Number.MAX_VALUE, bot: -Number.MAX_VALUE
   };
   for (var i = 0; i < arguments.length; i++) {
@@ -156,7 +156,7 @@ JAVASCRIPT
     box["right"] *= scaleX if box["right"]
     box["bot"] *= scaleY if box["bot"]
   end
-
+  
   def inflate_box_pct(box, marginPctX, marginPctY)
     width = box["width"] || (box["right"] - box["left"])
     height = box["height"] || (box["bot"] - box["top"])
@@ -217,7 +217,7 @@ JAVASCRIPT
       prof.gsub!(File.dirname(prof).to_s, Upload.base_upload_dir.to_s)
     end
   end
-
+    
   LAST_NAMES.each do |ln|
     [[MALE_FIRST_NAMES, MALE_PROFILES], [FEMALE_FIRST_NAMES, FEMALE_PROFILES]].each do |fns, profs|
       fns.each do |fn|
@@ -300,7 +300,7 @@ class Screenshots
     Capybara.save_path = path
     Headless.ly do
       DatabaseCleaner.clean_with :truncation
-
+      
       ss = Screenshots.new
       ss.extend(ScreenshotScripts)
       # Set desired dimensions
@@ -312,7 +312,7 @@ class Screenshots
 
       dpi = ss.get_dpi
       puts "DPI is #{dpi}"
-
+      
       HOOKS[:before_all].each do |m| ss.send(m) end
       ScreenshotScripts.instance_methods(false).each do |method|
         HOOKS[:before_each].each do |m| ss.send(m) end
@@ -355,7 +355,7 @@ class Screenshots
         HOOKS[:after_each].each do |m| ss.send(m) end
       end
       HOOKS[:after_all].each do |m| ss.send(m) end
-
+      
       dir = Upload.base_upload_dir.to_s
       if Rails.env.test? && dir =~ /test/
         puts "Cleaning up #{dir}"
@@ -378,7 +378,7 @@ class Screenshots
   def reset_db
     DatabaseCleaner.clean
   end
-
+  
   def create_students
     print "Creating #{RANDOM_PEOPLE.count} students..."
     User.transaction do
@@ -388,7 +388,7 @@ class Screenshots
     end
     puts "Done."
   end
-
+  
   def create_course
     print "Creating default course..."
     @fred = create(:user, name: "Fred McTeacher", first_name: "Fred", last_name: "McTeacher",
@@ -455,8 +455,8 @@ class Screenshots
     # This assignment is fully graded, but unpublished
     assn.submissions.each do |s| grade_sub(s, assn.graders.to_a, false) end
     puts "Done."
-
-
+    
+    
     # ASSIGNMENT 3
     print "Creating Assignment 3..."
     ts = Teamset.create(course: @course, name: "Teamset 3")
@@ -502,7 +502,7 @@ class Screenshots
     graders = assn.graders.to_a.sort_by(&:order)
     assn.submissions.each do |s| grade_sub(s, graders[0...-1], false) end
     puts "Done."
-
+    
 
     # ASSIGNMENT 1 Self-eval
     print "Creating Assigmment 1 Self-eval..."
@@ -534,7 +534,7 @@ class Screenshots
     assn.save!
     @assignments << assn
     puts "Done."
-
+    
     # ASSIGNMENTS 5--7
     (5..7).each do |i|
       print "Creating Assignment #{i}..."
@@ -571,7 +571,7 @@ class Screenshots
     end
     sub.compute_grade! if complete
   end
-
+  
   def set_default_size
     set_window_size(@width, @height + @chrome_height)
   end
@@ -610,7 +610,7 @@ class Screenshots
     end
     def course_page
       sign_in(@fred)
-
+      
       visit(course_path(@course))
       yield
       assignments, missing, abnormal, unpublished, current_teams, pending = page.find_all("div.panel").to_a
