@@ -698,7 +698,7 @@ class Screenshots
       yield options: bbox(missing)
       yield options: bbox(abnormal)
       # Fill in the missing graders, and now it should be pending
-      grader = @assignments[3].graders.last
+      @assignments[3].graders.last
       @assignments[3].submissions.each do |s|
         @assignments[3].graders.each do |g|
           g.ensure_grade_exists_for! s
@@ -723,7 +723,7 @@ class Screenshots
       yield options: course_bbox
 
       find(:xpath, ".//a[text()='New Course']").click
-      page.find("#course_name").set("CS3500 - Object-Oriented Design")
+      page.find("#course_name").set("Course 1")
       name = page.find(:xpath, ".//div[./input[@id='course_name']]")
       term = page.find(:xpath, ".//div[./select[@id='course_term_id']]")
       name_term_bbox = bbox(name, term)
@@ -813,7 +813,7 @@ class Screenshots
       name = file_div.find(:xpath, ".//input[@id='assignment_name']")
       name.set("Assignment 10")
       assignment_text = file_div.find(:xpath, ".//textarea[@id='assignment_assignment']")
-      assignment_text.set("<a href=\"https://course.ccs.neu.edu/cs2500/ps1.html\">Assignment 1</a>: Please submit <b>ONE</b> .rkt file with all your work for this assignment")
+      assignment_text.set("<a href=\"https://course_website.com/assignment1.html\">Assignment 1</a>: Please submit <b>ONE</b> .rkt file with all your work for this assignment")
       title = page.find(:xpath, ".//strong[text()='Create New Assignment']")
       yield options: bbox(name, title, assignment_text)
 
@@ -879,7 +879,7 @@ class Screenshots
       name = questions_div.find(:xpath, ".//input[@id='assignment_name']")
       name.set("Course Contract")
       assignment_text = questions_div.find(:xpath, ".//textarea[@id='assignment_assignment']")
-      assignment_text.set("Please read the <a href=\"https://course.ccs.neu.edu/cs2500/contract.html\">Course Contract</a> before submitting to this assignment.")
+      assignment_text.set("Please read the <a href=\"https://course_website.com/contract.html\">Course Contract</a> before submitting to this assignment.")
       title = page.find(:xpath, ".//strong[text()='Create New Assignment']")
       yield options: inflate_box(bbox(name, title, assignment_text), 5, 5, 5, 5)
 
@@ -901,7 +901,7 @@ class Screenshots
       name = code_review_div.find(:xpath, ".//input[@id='assignment_name']")
       name.set("Course Review of Assignment 1")
       assignment_text = code_review_div.find(:xpath, ".//textarea[@id='assignment_assignment']")
-      assignment_text.set("Code review of <a href=\"https://course.ccs.neu.edu/cs2500/ps1.html\">assignment 1 </a>.")
+      assignment_text.set("Code review of <a href=\"https://course_website.com/assignment1.html\">assignment 1 </a>.")
       title = page.find(:xpath, ".//strong[text()='Create New Assignment']")
       yield options: inflate_box(bbox(name, title, assignment_text), 5, 5, 5, 5)
 
@@ -941,7 +941,7 @@ class Screenshots
       name = exam_div.find(:xpath, ".//input[@id='assignment_name']")
       name.set("Midterm exam")
       assignment_text = exam_div.find(:xpath, ".//textarea[@id='assignment_assignment']")
-      assignment_text.set("To learn more about the exam please see the <a href=\"https://course.ccs.neu.edu/cs2500/\">course web page</a>.")
+      assignment_text.set("To learn more about the exam please see the <a href=\"https://course_website.com\">course web page</a>.")
       title = page.find(:xpath, ".//strong[text()='Create New Assignment']")
       yield options: inflate_box(bbox(name, title, assignment_text), 5, 5, 5, 5)
 
@@ -1183,7 +1183,7 @@ class Screenshots
       # puts Grade.count
       subs = @assignments[2].submissions
       graders = @assignments[2].graders.to_a.sort_by(&:order)
-      last_grader = graders.pop
+      graders.pop
       subs.each do |s|
         graders.each do |g|
           g.ensure_grade_exists_for! s
@@ -1300,7 +1300,7 @@ Capybara.default_driver = :selenium_chrome_headless #:selenium_chrome
 DatabaseCleaner.strategy = :deletion
 DatabaseCleaner.start
 
-path = Pathname.new(ARGV[1] || "./screenshots")
+path = Pathname.new(ARGV[1] || "./screenshots-faculty")
 puts path
 FileUtils.mkdir_p path unless File.directory? path
 Screenshots.generate path
